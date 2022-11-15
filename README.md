@@ -61,7 +61,7 @@ config_key = 'p'
 ----|----|---- 
 |config_ms|ZRを押した時間がどれだけ以下なら単押しと判定するか (ms)|300|
 |config_count|ZRを単押しした場合何回連打入力するか (整数)|3|
-|config_key|Raspberry Piに接続したキーボードのどのキーを押せば<br>機能をオンオフ出来るか (任意のキーの1文字)|p|
+|config_key|Raspberry Piに接続したキーボードのどのキーを押せば機能をオンオフ出来るか (任意のキーの1文字)|p|
 
 &nbsp;
 ## Toggle-masher.py（鋭意製作中）
