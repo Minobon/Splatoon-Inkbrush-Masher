@@ -1,7 +1,41 @@
 # Splatoon-Inkbrush-Masher
+
 パブロのZR連打を代わりにやってくれるプログラム。  
 ZR単押しと長押しを区別して連打するかどうか判断することで、ZR以外のボタンを使うことなく連打と筆移動両方が可能。
-その辺の連射コンでは出来ないと思う。知らんけど。
+その辺の連射コンでは出来ないと思う。知らんけど。  
+
+## 導入方法
+#### 用意するもの
+- Raspberry Pi 4B (**おすすめ**) または Raspberry Pi Zero/Zero2
+  - 僕はZeroで色々苦労しました。出来なくはないんだけどね。
+- プロコン
+- USBケーブル(A to C) 2本
+  - ドックとラズパイ、ラズパイとプロコンが繋げられればOK  
+
+#### 最初だけする作業
+OS（Raspbian）のUSB gadgetという機能を使いたいので、それを有効化する作業。  
+コマンドラインで以下のコマンド3つをそれぞれ実行する。  
+~~~
+echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
+echo "dwc2" | sudo tee -a /etc/modules
+echo "libcomposite" | sudo tee -a /etc/modules
+~~~
+出来たらラズパイを再起動。  
+その後 [add_procon_gadget.sh](https://gist.github.com/mzyy94/60ae253a45e2759451789a117c59acf9#file-add_procon_gadget-sh) をここからダウンロードする
+
+#### 毎回やること
+ダウンロードしておいた `add_procon_gadget.sh` を実行する。
+~~~
+sudo sh add_procon_gadget.sh
+~~~
+このときSwitchとラズパイのUSB Type-CポートをUSBケーブルで繋いでおく。  
+  
+特にエラーなく実行出来たら、以下のプログラム `Mash-n-times.py` `Toggle-masher.py` のうち好きな方を実行する。  
+~~~
+sudo python3 Mash-n-times.py
+~~~
+このときプロコンとラズパイをUSBケーブルで繋いでおく。  
+
 
 &nbsp;
 ## Mash-n-times.py
