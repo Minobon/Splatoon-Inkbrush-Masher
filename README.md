@@ -1,2 +1,50 @@
 # Splatoon-Inkbrush-Masher
-パブロのZR連打を代わりにやってくれるプログラム。Raspberry PiのUSB gadget機能とプロコン使用。
+パブロのZR連打を代わりにやってくれるプログラム。  
+ZR単押しと長押しを区別して連打するかどうか判断することで、ZR以外のボタンを使うことなく連打と筆移動両方が可能。
+その辺の連射コンでは出来ないと思う。知らんけど。
+
+&nbsp;
+## Mash-n-times.py
+ZRを単押しするとconfigで設定した回数連打してくれる。  
+シンプルで慣れもあまり必要なく使いやすいが、連打が終わるまでイカになれない為、体感上筆を振った後一瞬硬直状態になる（スクリュースロッシャーぽい使用感）。  
+長押しとの区別は、ZRを離した時点でZRが何ミリ秒押されていたか。閾値はconfigで設定する。  
+
+### Config (23行目~30行目)
+~~~
+#Judgment threshold (in ms).
+config_ms = 300
+
+#Number of shots (in integer).
+config_count = 3
+
+#Toggle key
+config_key = 'p'
+~~~
+|変数名|説明|初期値|
+----|----|---- 
+|config_ms|ZRを押した時間がどれだけ以下なら単押しと判定するか (ms)|300|
+|config_count|ZRを単押しした場合何回連打入力するか (整数)|3|
+|config_key|Raspberry Piに接続したキーボードのどのキーを押せば<br>機能をオンオフ出来るか (任意のキーの1文字)|p|
+
+&nbsp;
+## Toggle-masher.py（鋭意製作中）
+ZRを単押しするごとに連打機能をオン/オフしてくれる。  
+慣れが必要だが筆を振った後の硬直を最小限に出来るメリットがある。  
+長押しとの区別は`Mash-n-times.py`と同じ方法。configの設定も同様。
+
+&nbsp;
+## 今後やりたいこと
+- 連射速度の調整機能の実装  
+&nbsp;
+
+## 参考にしたサイト等
+圧倒的先人方の知恵に助けられました。  
+
+**dekuNukem/Nintendo_Switch_Reverse_Engineering: A look at inner workings of Joycon and Nintendo Switch**  
+https://github.com/dekuNukem/Nintendo_Switch_Reverse_Engineering  
+
+**マウスを任天堂スイッチのプロコンのジャイロに連動させる - Qiita**  
+https://qiita.com/Bokuchin/items/7fee2c6a04c97dde29b4  
+
+**スマホでNintendo Switchを操作する 〜 USB GadgetでPro Controllerをシミュレート 〜 | 犬アイコンのみっきー**
+https://www.mzyy94.com/blog/2020/03/20/nintendo-switch-pro-controller-usb-gadget/  
