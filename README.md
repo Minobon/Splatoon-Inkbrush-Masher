@@ -7,7 +7,7 @@ ZR単押しと長押しを区別して連打するかどうか判断すること
 Swicth - Raspberry Pi - Procon  
 というようにラズパイを中継して接続し、途中でデータを書き換えることで連射機能を実装している。  
 
-`Mash-n-times.py` (単押し1回で設定回数連打してくれる)と `Toggle-masher.py` (単押しするごとに連射機能をオン/オフしてくれる)の2種類作ったので、好きな方を使える。  
+`Mash-n-times.py` (単押し1回で設定回数連打してくれる)と `Toggle-masher.py` (単押しするごとに連射機能をオン/オフしてくれる)の2種類作ったので、好きな方を使ってね。  
 僕的には後者がおすすめ。
 
 ## 導入方法
@@ -38,7 +38,7 @@ sudo sh add_procon_gadget.sh
   
 特にエラーなく実行出来たら、以下のプログラム `Mash-n-times.py` `Toggle-masher.py` のうち好きな方を実行する。  
 ~~~
-sudo python3 Mash-n-times.py
+sudo python3 Toggle-masher.py
 ~~~
 このときプロコンとラズパイをUSBケーブルで繋いでおく。  
 
