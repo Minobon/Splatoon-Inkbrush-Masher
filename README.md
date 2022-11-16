@@ -80,7 +80,7 @@ config_rate = 30
 |config_rate|1秒間に何回ボタンを連打するか(数値)|30|
 
 &nbsp;
-## Toggle-masher.py（鋭意製作中）
+## Toggle-masher.py
 ZRを単押しするごとに連打機能をオン/オフしてくれる。  
 慣れが必要だが筆を振った後の硬直を最小限に出来るメリットがある。  
 長押しとの区別は`Mash-n-times.py`と同じ方法。  
