@@ -92,3 +92,4 @@ https://qiita.com/Bokuchin/items/7fee2c6a04c97dde29b4
 
 **スマホでNintendo Switchを操作する 〜 USB GadgetでPro Controllerをシミュレート 〜 | 犬アイコンのみっきー**
 https://www.mzyy94.com/blog/2020/03/20/nintendo-switch-pro-controller-usb-gadget/  
+
