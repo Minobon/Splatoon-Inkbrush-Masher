@@ -11,23 +11,32 @@ os.system('ls /sys/class/udc > /sys/kernel/config/usb_gadget/procon/UDC')
 
 time.sleep(0.5)
 
+# HID Device ID
 gadget = os.open('/dev/hidg0', os.O_RDWR | os.O_NONBLOCK)
 procon = os.open('/dev/hidraw0', os.O_RDWR | os.O_NONBLOCK)
 
+# Global variables
 last_ZR = False
 ZR_on = 0
 count = 0
 rapid_fire_flag = False
 toggle = True
 
-#Judgment threshold (in ms).
+# ============= CONFIG =============
+
+# Single push threshold (ms).
+# Initial value : 300
 config_ms = 300
 
-#Number of shots (in integer).
+# Number of shots (integer).
+# Initial value : 3
 config_count = 3
 
-#Toggle key
+# Mash function switch key (one character).
+# Initial value : 'p'
 config_key = 'p'
+
+# ==============================
 
 def procon_input():
     while True:
@@ -47,10 +56,10 @@ def toggle():
         if keyboard.is_pressed(config_key):
             if toggle:
                 toggle = False
-                print("Rapid-fire function switched off.")
+                print("Mash function switched off.")
             else:
                 toggle = True
-                print("Rapid-fire function switched on.")
+                print("Mash function switched on.")
 
 
 def rensya(data):
