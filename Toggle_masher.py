@@ -18,7 +18,6 @@ procon = os.open('/dev/hidraw0', os.O_RDWR | os.O_NONBLOCK)
 # Global variables
 last_ZR = False
 ZR_on = 0
-count = 0
 rapid_fire_flag = False
 toggle = True
 last_mash = 0
@@ -28,10 +27,6 @@ last_mash = 0
 # Single push threshold (ms).
 # Initial value : 300
 config_ms = 300
-
-# Number of shots (integer).
-# Initial value : 6
-config_count = 6
 
 # Mash function switch key (one character).
 # Initial value : 'p'
@@ -68,7 +63,7 @@ def toggle():
 
 
 def rensya(data):
-    global last_ZR, ZR_on, count, rapid_fire_flag, config_ms, config_count, last_mash
+    global last_ZR, ZR_on, rapid_fire_flag, config_ms, last_mash
     if not last_ZR:
         if data[3] >= 0x80:
             #ZR off -> on
@@ -83,23 +78,22 @@ def rensya(data):
             #ZR on -> off
             pressed_time = (time.time() - ZR_on) * 1000
             if pressed_time <= config_ms:
-                rapid_fire_flag = True
-                count = 0
-                last_mash = time.time()
+                if rapid_fire_flag:
+                    rapid_fire_flag = False
+                else:
+                    rapid_fire_flag = True
+                    last_mash = time.time()
                 print("ZR button shortly pressed")
             else:
                 pass
             last_ZR = False
     if rapid_fire_flag:
         mash_interval = (time.time() - last_mash)
-        if count >= config_count:
-            rapid_fire_flag = False
         if mash_interval >= (1 / config_rate):
             data2 = bytearray(data)
             data2[3] |= 0x80
             data = bytes(data2)
             last_mash = time.time()
-            count = count + 1
             print("Pressed ZR button")
         else:
             pass

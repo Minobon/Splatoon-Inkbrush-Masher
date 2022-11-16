@@ -50,28 +50,43 @@ ZRを単押しするとconfigで設定した回数連打してくれる。
 シンプルで慣れもあまり必要なく使いやすいが、連打が終わるまでイカになれない為、体感上筆を振った後一瞬硬直状態になる（スクリュースロッシャーぽい使用感）。  
 長押しとの区別は、ZRを離した時点でZRが何ミリ秒押されていたか。閾値はconfigで設定する。  
 
-### Config (23行目~30行目)
+### Config (26行目~44行目)
 ~~~
-#Judgment threshold (in ms).
+# ============= CONFIG =============
+
+# Single push threshold (ms).
+# Initial value : 300
 config_ms = 300
 
-#Number of shots (in integer).
-config_count = 3
+# Number of shots (integer).
+# Initial value : 6
+config_count = 6
 
-#Toggle key
+# Mash function switch key (one character).
+# Initial value : 'p'
 config_key = 'p'
+
+# Mash rate [times per second] (numerical value)
+# Initial value : 30
+config_rate = 30
+
+# ==============================
 ~~~
 |変数名|説明|初期値|
 ----|----|---- 
 |config_ms|ZRを押した時間がどれだけ以下なら単押しと判定するか (ms)|300|
-|config_count|ZRを単押しした場合何回連打入力するか (整数)|3|
+|config_count|ZRを単押しした場合何回連打入力するか (整数)|6|
 |config_key|Raspberry Piに接続したキーボードのどのキーを押せば機能をオンオフ出来るか (任意のキーの1文字)|p|
+|config_rate|1秒間に何回ボタンを連打するか(数値)|30|
 
 &nbsp;
 ## Toggle-masher.py（鋭意製作中）
 ZRを単押しするごとに連打機能をオン/オフしてくれる。  
 慣れが必要だが筆を振った後の硬直を最小限に出来るメリットがある。  
-長押しとの区別は`Mash-n-times.py`と同じ方法。configの設定も同様。
+長押しとの区別は`Mash-n-times.py`と同じ方法。  
+
+### Config (25行目~39行目)
+`config_count`(連打回数の設定)がない以外は `Mash-n-times.py` と同じなので上記参照。
 
 &nbsp;
 ## 今後やりたいこと
