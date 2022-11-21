@@ -18,7 +18,7 @@ procon = os.open('/dev/hidraw0', os.O_RDWR | os.O_NONBLOCK)
 # Global variables
 last_ZR = False
 ZR_on = 0
-rapid_fire_flag = False
+mash_flag = False
 toggle = True
 last_mash = 0
 
@@ -61,33 +61,32 @@ def toggle():
                 toggle = True
                 print("Mash function switched on.")
 
-
-def rensya(data):
-    global last_ZR, ZR_on, rapid_fire_flag, config_ms, last_mash
+def mash(data):
+    global last_ZR, ZR_on, mash_flag, config_ms, last_mash
     if not last_ZR:
-        if data[3] >= 0x80:
+        if ((data[3] & 0b10000000) == 0b10000000):
             #ZR off -> on
             ZR_on = time.time()
             last_ZR = True
         else:
             pass
     else: 
-        if data[3] >= 0x80:
-            pass
+        if ((data[3] & 0b10000000) == 0b10000000):
+            last_ZR = True
         else:
             #ZR on -> off
             pressed_time = (time.time() - ZR_on) * 1000
             if pressed_time <= config_ms:
-                if rapid_fire_flag:
-                    rapid_fire_flag = False
+                if mash_flag:
+                    mash_flag = False
                 else:
-                    rapid_fire_flag = True
+                    mash_flag = True
                     last_mash = time.time()
                 print("ZR button shortly pressed")
             else:
                 pass
             last_ZR = False
-    if rapid_fire_flag:
+    if mash_flag:
         mash_interval = (time.time() - last_mash)
         if mash_interval >= (1 / config_rate):
             data2 = bytearray(data)
@@ -105,7 +104,7 @@ def procon_output():
             output_data = os.read(procon, 128)
             #print('<<<', output_data.hex())
             if toggle:
-                output_data_2 = rensya(output_data)
+                output_data_2 = mash(output_data)
             else:
                 output_data_2 = output_data
             os.write(gadget, output_data_2)

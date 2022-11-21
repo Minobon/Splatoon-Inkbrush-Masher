@@ -16,22 +16,10 @@ gadget = os.open('/dev/hidg0', os.O_RDWR | os.O_NONBLOCK)
 procon = os.open('/dev/hidraw0', os.O_RDWR | os.O_NONBLOCK)
 
 # Global variables
-last_ZR = False
-ZR_on = 0
-count = 0
-mash_flag = False
 toggle = True
 last_mash = 0
 
 # ============= CONFIG =============
-
-# Single push threshold (ms).
-# Initial value : 300
-config_ms = 300
-
-# Number of shots (integer).
-# Initial value : 6
-config_count = 6
 
 # Mash function switch key (one character).
 # Initial value : 'p'
@@ -66,42 +54,24 @@ def toggle():
                 toggle = True
                 print("Mash function switched on.")
 
+
 def mash(data):
-    global last_ZR, ZR_on, count, mash_flag, config_ms, config_count, last_mash
-    if not last_ZR:
-        if ((data[3] & 0b10000000) == 0b10000000):
-            #ZR off -> on
-            ZR_on = time.time()
-            last_ZR = True
-        else:
-            pass
-    else: 
-        if ((data[3] & 0b10000000) == 0b10000000):
-            last_ZR = True
-        else:
-            #ZR on -> off
-            pressed_time = (time.time() - ZR_on) * 1000
-            if pressed_time <= config_ms:
-                mash_flag = True
-                count = 0
-                last_mash = time.time()
-                print("ZR button shortly pressed")
-            else:
-                pass
-            last_ZR = False
-    if mash_flag:
+    global last_mash
+    if (data[3] & 0b10000000) == 0b10000000:
         mash_interval = (time.time() - last_mash)
-        if count >= config_count:
-            mash_flag = False
+        data2 = bytearray(data)
         if mash_interval >= (1 / config_rate):
-            data2 = bytearray(data)
             data2[3] |= 0x80
-            data = bytes(data2)
             last_mash = time.time()
-            count = count + 1
             print("Pressed ZR button")
         else:
-            pass
+            data2[3] = data2[3] & 0b01111111
+        data = bytes(data2)
+    if (data[5] & 0b01000000) == 0b01000000:
+        #ZL -> ZR
+        data2 = bytearray(data)
+        data2[3] |= 0x80
+        data = bytes(data2)
     return data
 
 def procon_output():
